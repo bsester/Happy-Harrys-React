@@ -11,6 +11,14 @@ function Customers()
             .then(res => setCustomers(res.data))
             .catch(err => console.log(err))
     }, []);
+    const handleDelete = (id) =>
+    {
+        axios.delete('http://localhost:8081/customers/delete/'+id)
+            .then(res => {
+                window.location.reload();
+            })
+            .catch(err => console.log(err))
+    }
 
     return (
         <div className = "container">
@@ -30,6 +38,8 @@ function Customers()
                             <td>{customer.CustomerName}</td>
                             <td>{customer.CustomerEmail}</td>
                             <td>${customer.Total}</td>
+                            <td> <Link to={`/customers/edit/${customer.CustomerID}`} className='btn btn-sm btn-info'>Update</Link></td>
+                            <td> <button onClick={() => handleDelete(customer.CustomerID)} className='btn btn-sm btn-danger'>Delete</button></td>
                         </tr>
                     })}
                     </tbody>

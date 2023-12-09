@@ -11,8 +11,8 @@ function Navbar()
                 <ul className="navbar-nav ms-auto">
                     <li className="nav-item"><a className="nav-link active" href="/">Home</a></li>
                     <li className="nav-item"><a className="nav-link" href="/customers">Customers</a></li>
-                    <li className="nav-item"><a className="nav-link" href="products.html">Products</a></li>
-                    <li className="nav-item"><a className="nav-link" href="sales.html">Sales</a></li>
+                    <li className="nav-item"><a className="nav-link" href="/items">Products</a></li>
+                    <li className="nav-item"><a className="nav-link" href="/sales">Sales</a></li>
                 </ul>
             </div>
         </div>

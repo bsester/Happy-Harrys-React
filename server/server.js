@@ -57,6 +57,45 @@ app.post('/customers/create', (req, res) =>
             return res.json(result);
     })
 })
+app.get('/customers/read/:id', (req, res) =>
+{
+    const sql = "SELECT * FROM customer WHERE CustomerID = ?";
+    const id = req.params.id;
+
+    db.query(sql,[id], (err, result) =>
+    {
+        if (err)
+            return res.json(err);
+        else
+            return res.json(result);
+    })
+})
+
+app.put('/customers/edit/:id', (req, res) =>
+{
+    const sql = "UPDATE item SET `CustomerName`=?, `CustomerEmail`=? WHERE ItemID=?";
+    const id = req.params.id;
+
+    db.query(sql,[req.body.name, req.body.price, id], (err, result) =>
+    {
+        if (err)
+            console.log(res.json({Message: "Server Error"}));
+        else
+            return res.json(result);
+    })
+})
+app.delete('/customers/delete/:id', (req, res) => {
+    const sql = "DELETE FROM customer WHERE CustomerID = ?";
+    const id = req.params.id;
+
+    db.query(sql,[id], (err, result) =>
+    {
+        if (err)
+            return res.json(err);
+        else
+            return res.json(result);
+    })
+})
 
 
 
@@ -78,6 +117,75 @@ app.get('/items/top', (req, res) =>
         })
 
 })
+app.get('/items/all', (req, res) =>
+{
+    const sql = "SELECT i.ItemID, i.ItemName, SUM(s.Quantity * i.ItemPrice) AS Total " +
+        "FROM sales s " +
+        "JOIN item i ON s.ItemID = i.ItemID " +
+        "GROUP BY i.ItemID, i.ItemName "
+    db.query(sql, (err, result) =>
+    {
+        if (err)
+            console.log(err);
+        else
+            return res.json(result);
+    })
+
+})
+app.post('/items/create', (req, res) =>
+{
+    const sql = "INSERT INTO item (`ItemName`,`ItemPrice`) VALUES (?)"
+    const values= [req.body.name, req.body.price];
+    db.query(sql,[values], (err, result) =>
+    {
+        if (err)
+            console.log(err);
+        else
+            return res.json(result);
+    })
+})
+
+app.get('/items/read/:id', (req, res) =>
+{
+    const sql = "SELECT * FROM item WHERE ItemID = ?";
+    const id = req.params.id;
+
+    db.query(sql,[id], (err, result) =>
+    {
+        if (err)
+            return res.json(err);
+        else
+            return res.json(result);
+    })
+})
+app.put('/items/edit/:id', (req, res) =>
+{
+    const sql = "UPDATE item SET `ItemName`=?, `ItemPrice`=? WHERE ItemID=?";
+    const id = req.params.id;
+
+    db.query(sql,[req.body.name, req.body.price, id], (err, result) =>
+    {
+        if (err)
+            console.log(res.json({Message: "Server Error"}));
+        else
+            return res.json(result);
+    })
+})
+
+app.delete('/items/delete/:id', (req, res) => {
+    const sql = "DELETE FROM item WHERE ItemID = ?";
+    const id = req.params.id;
+
+    db.query(sql,[id], (err, result) =>
+    {
+        if (err)
+            return res.json(err);
+        else
+            return res.json(result);
+    })
+})
+
+
 
 
 // ------------------- SALES ------------------
@@ -91,7 +199,17 @@ app.get('/sales/top', (req, res) =>
         else
             return res.json(result);
     })
-
+})
+app.get('/sales/all', (req, res) =>
+{
+    const sql = "SELECT i.ItemName, c.CustomerName, s.Quantity, DATE(s.SalesDate) AS Sales_Date, i.ItemPrice, s.Quantity * i.ItemPrice AS Total FROM sales s JOIN item i ON s.ItemID = i.ItemID JOIN customer c ON s.CustomerID = c.CustomerID WHERE MONTH(s.SalesDate) = 11 ORDER BY s.SalesDate"
+    db.query(sql, (err, result) =>
+    {
+        if (err)
+            console.log(err);
+        else
+            return res.json(result);
+    })
 })
 
 
