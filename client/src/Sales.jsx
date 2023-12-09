@@ -7,7 +7,7 @@ function Sales()
     const [sales, setSales] = useState([]);
     useEffect(() => {
         axios.get('http://localhost:8081/sales/all')
-            .then(res => setCustomers(res.data))
+            .then(res => setSales(res.data))
             .catch(err => console.log(err))
     }, []);
 
@@ -16,20 +16,22 @@ function Sales()
         <table className = 'table table-striped'>
             <thead>
             <tr>
-                <th> Name </th>
-                <th> Email </th>
+                <th> Date </th>
+                <th> Customer </th>
+                <th> Product </th>
+                <th> Quantity </th>
                 <th> Total Sales </th>
             </tr>
             </thead>
             <tbody>
-            {customers.map((customer, index) =>
+            {sales.map((sales, index) =>
             {
                 return <tr key ={index}>
-                    <td>{customer.CustomerName}</td>
-                    <td>{customer.CustomerEmail}</td>
-                    <td>${customer.Total}</td>
-                    <td> <Link to={`/customers/edit/${customer.CustomerID}`} className='btn btn-sm btn-info'>Update</Link></td>
-                    <td> <button onClick={() => handleDelete(customer.CustomerID)} className='btn btn-sm btn-danger'>Delete</button></td>
+                    <td>{sales.Sales_Date}</td>
+                    <td>{sales.CustomerName}</td>
+                    <td>{sales.ItemName}</td>
+                    <td>{sales.Quantity}</td>
+                    <td>${sales.Total}</td>
                 </tr>
             })}
             </tbody>
