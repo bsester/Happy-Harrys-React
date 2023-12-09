@@ -49,6 +49,21 @@ app.get('/items/top', (req, res) =>
 
 })
 
+app.get('/sales/top', (req, res) =>
+{
+    const sql = "SELECT i.ItemID, i.ItemID, CONCAT(DATE_FORMAT(s.SalesDate, '%M'), ' ', DATE_FORMAT(s.SalesDate, '%Y')) AS month, SUM(s.Quantity * i.ItemPrice) AS Total FROM sales s JOIN item i ON s.ItemID = i.ItemID GROUP BY i.ItemID, i.ItemID, month ORDER BY `Total` DESC LIMIT 5"
+    db.query(sql, (err, result) =>
+    {
+        if (err)
+            console.log(err);
+        else
+            return res.json(result);
+    })
+
+})
+
+
+
 app.listen(8081, () =>
 {
     console.log("listening...");

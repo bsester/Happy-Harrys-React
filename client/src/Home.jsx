@@ -22,6 +22,14 @@ function Home()
             .catch(err => console.log(err))
     }, []);
 
+    // grab top sales
+    const [topSales, setTopSales] = useState([]);
+    useEffect(() => {
+        axios.get('http://localhost:8081/sales/top')
+            .then(res => setTopSales(res.data))
+            .catch(err => console.log(err))
+    }, []);
+
 
     return (
 
@@ -74,7 +82,23 @@ function Home()
             <div className="col-sm-4">
                 <h2 className = "text-center"> Sales </h2>
                 <div id = "saleResults">
-
+                    <table className = 'table table-striped'>
+                        <thead>
+                        <tr>
+                            <th> Month </th>
+                            <th> Sales </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {topSales.map((sales, index) =>
+                        {
+                            return <tr key ={index}>
+                                <td>{sales.month}</td>
+                                <td>${sales.Total}</td>
+                            </tr>
+                        })}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
