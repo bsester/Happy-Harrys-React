@@ -15,7 +15,7 @@ const db = mysql.createConnection({
 )
 
 
-app.get('/topCustomers', (req, res) =>
+app.get('/customers/top', (req, res) =>
 {
     const sql = "SELECT s.SalesID, c.CustomerName, i.ItemName, s.Quantity, i.ItemPrice * s.Quantity AS Total " +
     "FROM sales s JOIN customer c ON s.CustomerID = c.CustomerID " +
@@ -31,7 +31,23 @@ app.get('/topCustomers', (req, res) =>
     })
 })
 
+app.get('/items/top', (req, res) =>
+{
+    const sql = "SELECT i.ItemID, i.ItemName, SUM(s.Quantity * i.ItemPrice) AS Total " +
+        "FROM sales s " +
+        "JOIN item i ON s.ItemID = i.ItemID " +
+        "GROUP BY i.ItemID, i.ItemName " +
+        "ORDER BY Total DESC " +
+        "LIMIT 5";
+        db.query(sql, (err, result) =>
+        {
+            if (err)
+                console.log(err);
+            else
+                return res.json(result);
+        })
 
+})
 
 app.listen(8081, () =>
 {
