@@ -31,6 +31,37 @@ app.get('/customers/top', (req, res) =>
     })
 })
 
+app.get('/customers/all', (req, res) =>
+{
+    const sql = "SELECT s.SalesID, c.CustomerName, c.CustomerEmail, i.ItemName, s.Quantity, i.ItemPrice * s.Quantity AS Total " +
+        "FROM sales s JOIN customer c ON s.CustomerID = c.CustomerID " +
+        "JOIN item i ON s.ItemID = i.ItemID ";
+    db.query(sql, (err, result) =>
+    {
+        if (err)
+            console.log(err);
+        else
+            return res.json(result);
+    })
+})
+
+app.post('/customers/create', (req, res) =>
+{
+    const sql = "INSERT INTO customer (`CustomerName`,`CustomerEmail`) VALUES (?)"
+    const values= [req.body.name, req.body.email];
+    db.query(sql,[values], (err, result) =>
+    {
+        if (err)
+            console.log(err);
+        else
+            return res.json(result);
+    })
+})
+
+
+
+
+
 app.get('/items/top', (req, res) =>
 {
     const sql = "SELECT i.ItemID, i.ItemName, SUM(s.Quantity * i.ItemPrice) AS Total " +
