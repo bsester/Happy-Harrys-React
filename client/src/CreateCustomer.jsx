@@ -14,7 +14,7 @@ function CreateCustomer()
         axios.post('http://localhost:8081/customers/create', values)
             .then(res => {
                 console.log(res);
-                navigate('/');
+                navigate('/customers');
             })
             .catch(err => console.log(err))
     }

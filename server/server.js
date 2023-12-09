@@ -14,7 +14,7 @@ const db = mysql.createConnection({
     }
 )
 
-
+// ------------------- CUSTOMERS ------------------
 app.get('/customers/top', (req, res) =>
 {
     const sql = "SELECT s.SalesID, c.CustomerName, i.ItemName, s.Quantity, i.ItemPrice * s.Quantity AS Total " +
@@ -60,8 +60,7 @@ app.post('/customers/create', (req, res) =>
 
 
 
-
-
+// ------------------- ITEMS ------------------
 app.get('/items/top', (req, res) =>
 {
     const sql = "SELECT i.ItemID, i.ItemName, SUM(s.Quantity * i.ItemPrice) AS Total " +
@@ -80,6 +79,8 @@ app.get('/items/top', (req, res) =>
 
 })
 
+
+// ------------------- SALES ------------------
 app.get('/sales/top', (req, res) =>
 {
     const sql = "SELECT i.ItemID, i.ItemID, CONCAT(DATE_FORMAT(s.SalesDate, '%M'), ' ', DATE_FORMAT(s.SalesDate, '%Y')) AS month, SUM(s.Quantity * i.ItemPrice) AS Total FROM sales s JOIN item i ON s.ItemID = i.ItemID GROUP BY i.ItemID, i.ItemID, month ORDER BY `Total` DESC LIMIT 5"
