@@ -41,7 +41,7 @@ function EditItem()
                                onChange ={e => setValues({...values, name: e.target.value})}/>
                     </div>
                     <div className='mb-2'>
-                        <label htmlFor=""> Email </label>
+                        <label htmlFor=""> Price </label>
                         <input type = 'number' placeholder= 'Enter Price Here' className= 'form-control' value={[values.price]}
                                onChange ={e => setValues({...values, price: e.target.value})}/>
                     </div>
